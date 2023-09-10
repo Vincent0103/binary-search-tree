@@ -12,17 +12,27 @@ function Tree(arr) {
 }
 
 function buildTree(arr) {
-  if (arr.length - 1 > 0) {
-    const mid = Math.floor((arr.length - 1) / 2);
-    buildTree(arr.slice(0, mid + 1));
-    const node1 = Node(arr[mid]);
-    buildTree(arr.slice(mid + 1, arr.length));
-    const node2 = Node(arr[mid]);
-    console.log(node1, node2);
-  } else {
-    return null;
-  }
+  const len = arr.length;
+  if (len - 1 < 0) return null;
+  const mid = Math.floor((len - 1) / 2);
+  const root = Node(arr[mid], buildTree(arr.slice(0, mid)), buildTree(arr.slice(mid + 1, len)));
+  return root;
 }
+
+const prettyPrint = (node, prefix = '', isLeft = true) => {
+  if (node === null) {
+    return;
+  }
+  if (node.right !== null) {
+    prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
+  }
+  console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
+  if (node.left !== null) {
+    prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
+  }
+};
+
 const list = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const alterList = removeDuplicates(mergeSort(list));
-console.log(alterList);
+const treeNode = buildTree(alterList);
+console.log(prettyPrint(treeNode));
