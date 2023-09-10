@@ -33,6 +33,9 @@ const Tree = (arr) => {
   }
 
   function deleteNode(val, currentRoot = root) {
+    // return null if value not in BST
+    if (!currentRoot) return null;
+
     const leftNode = currentRoot.left;
     const rightNode = currentRoot.right;
     const rootNode = currentRoot;
@@ -47,6 +50,14 @@ const Tree = (arr) => {
         alterNode.right.left = alterNode.right.left.right;
       }
     };
+
+    // if the target value is the first node from the original rootBST
+    if (val === rootNode.data) {
+      if (leftNode && rightNode) deleteWhenTwoChilds(rootNode);
+      else if (leftNode) this.root = leftNode;
+      else if (rightNode) this.root = rightNode;
+      return root;
+    }
 
     if (leftNode && val === leftNode.data) {
       if (!leftNode.left && !leftNode.right) rootNode.left = null;
@@ -66,7 +77,6 @@ const Tree = (arr) => {
 
     if (val > rootNode.data) deleteNode(val, rightNode);
     else if (val < rootNode.data) deleteNode(val, leftNode);
-    return null;
   }
 
   return { root, insert, deleteNode };
@@ -88,5 +98,9 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 const list = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const alterList = removeDuplicates(mergeSort(list));
 const treeNode = Tree(alterList);
+treeNode.deleteNode(67);
 treeNode.deleteNode(4);
+treeNode.deleteNode(7);
+treeNode.deleteNode(1);
+treeNode.deleteNode(287);
 prettyPrint(treeNode.root);
