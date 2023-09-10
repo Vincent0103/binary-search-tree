@@ -18,7 +18,7 @@ const Tree = (arr) => {
   function insert(val, currentRoot = root) {
     if (val > currentRoot.data) {
       if (!currentRoot.right) {
-        const rightRoot = currentRoot;
+        const rightRoot = currentRoot.right;
         rightRoot.right = Node(val);
         return root;
       }
@@ -32,7 +32,44 @@ const Tree = (arr) => {
     return insert(val, currentRoot.left);
   }
 
-  return { root, insert };
+  function deleteNode(val, currentRoot = root) {
+    const leftNode = currentRoot.left;
+    const rightNode = currentRoot.right;
+    const rootNode = currentRoot;
+
+    const deleteWhenTwoChilds = (node) => {
+      const alterNode = node;
+      if (!alterNode.right.left) {
+        alterNode.data = alterNode.right.data;
+        alterNode.right = alterNode.right.right;
+      } else {
+        alterNode.data = alterNode.right.left.data;
+        alterNode.right.left = alterNode.right.left.right;
+      }
+    };
+
+    if (leftNode && val === leftNode.data) {
+      if (!leftNode.left && !leftNode.right) rootNode.left = null;
+      else if (leftNode.left && leftNode.right) deleteWhenTwoChilds(leftNode);
+      else if (leftNode.left) rootNode.left = leftNode.left;
+      else if (leftNode.right) rootNode.left = leftNode.right;
+      return root;
+    }
+
+    if (rightNode && val === rightNode.data) {
+      if (!rightNode.left && !rightNode.right) rootNode.right = null;
+      else if (rightNode.left && rightNode.right) deleteWhenTwoChilds(rightNode);
+      else if (rightNode.left) rootNode.right = rightNode.left;
+      else if (rightNode.right) rootNode.right = rightNode.right;
+      return root;
+    }
+
+    if (val > rootNode.data) deleteNode(val, rightNode);
+    else if (val < rootNode.data) deleteNode(val, leftNode);
+    return null;
+  }
+
+  return { root, insert, deleteNode };
 };
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -51,6 +88,5 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 const list = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const alterList = removeDuplicates(mergeSort(list));
 const treeNode = Tree(alterList);
-// console.log(prettyPrint(treeNode.root));
-console.log(prettyPrint(treeNode.insert(18)));
-console.log(prettyPrint(treeNode.insert(119)));
+treeNode.deleteNode(4);
+prettyPrint(treeNode.root);
