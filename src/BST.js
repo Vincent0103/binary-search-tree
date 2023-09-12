@@ -15,7 +15,7 @@ const buildTree = (arr) => {
 const Tree = (arr) => {
   const root = buildTree(arr);
 
-  function insert(val, currentRoot = root) {
+  function insert(val, currentRoot = this.root) {
     if (val > currentRoot.data) {
       if (!currentRoot.right) {
         const rightRoot = currentRoot.right;
@@ -32,7 +32,7 @@ const Tree = (arr) => {
     return insert(val, currentRoot.left);
   }
 
-  function deleteNode(val, currentRoot = root) {
+  function deleteNode(val, currentRoot = this.root) {
     // return null if value not in BST
     if (!currentRoot) return null;
 
@@ -77,9 +77,27 @@ const Tree = (arr) => {
 
     if (val > rootNode.data) deleteNode(val, rightNode);
     else if (val < rootNode.data) deleteNode(val, leftNode);
+    return null;
   }
 
-  return { root, insert, deleteNode };
+  function find(val, currentRoot = this.root) {
+    if (!currentRoot) return null;
+
+    if (val > currentRoot.data) {
+      return find(val, currentRoot.right);
+    } if (val < currentRoot.data) {
+      return find(val, currentRoot.left);
+    } if (val === currentRoot.data) {
+      return currentRoot;
+    }
+
+    // edge case
+    return null;
+  }
+
+  return {
+    root, insert, deleteNode, find,
+  };
 };
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -98,9 +116,5 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 const list = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const alterList = removeDuplicates(mergeSort(list));
 const treeNode = Tree(alterList);
-treeNode.deleteNode(67);
-treeNode.deleteNode(4);
-treeNode.deleteNode(7);
-treeNode.deleteNode(1);
-treeNode.deleteNode(287);
+console.log(treeNode.find(7));
 prettyPrint(treeNode.root);
