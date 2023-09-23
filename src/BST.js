@@ -95,8 +95,25 @@ const Tree = (arr) => {
     return null;
   }
 
+  function levelOrder(callback, queue = [], currentRoot = this.root) {
+    if (currentRoot.left) queue.push(currentRoot.left);
+    if (currentRoot.right) queue.push(currentRoot.right);
+    if (queue.length > 0) {
+      if (!callback) return [currentRoot.data].concat(levelOrder(callback, queue, queue.shift()));
+      callback(currentRoot.data);
+      return levelOrder(callback, queue, queue.shift());
+    }
+    if (!callback) return currentRoot.data;
+    callback(currentRoot.data);
+    return true;
+  }
+
+  // function inorder(callback, currentRoot = this.root) {
+  //   if (!currentRoot.data) return null;
+  // }
+
   return {
-    root, insert, deleteNode, find,
+    root, insert, deleteNode, find, levelOrder,
   };
 };
 
@@ -113,8 +130,10 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
   }
 };
 
+const multiplyBy2 = (x) => x * 2;
+
 const list = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const alterList = removeDuplicates(mergeSort(list));
 const treeNode = Tree(alterList);
-console.log(treeNode.find(7));
 prettyPrint(treeNode.root);
+treeNode.levelOrder(multiplyBy2);
