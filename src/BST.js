@@ -121,12 +121,12 @@ const Tree = (arr) => {
       console.log(callback(currentRoot.data));
       inorder(callback, currentRoot.left);
       inorder(callback, currentRoot.right);
-    } else {
-      return [currentRoot.data].concat(
-        inorder(callback, currentRoot.left),
-        inorder(callback, currentRoot.right),
-      );
+      return true;
     }
+    return [currentRoot.data].concat(
+      inorder(callback, currentRoot.left),
+      inorder(callback, currentRoot.right),
+    );
   }
 
   return {
