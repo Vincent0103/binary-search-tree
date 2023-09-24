@@ -108,10 +108,12 @@ const Tree = (arr) => {
     return true;
   }
 
-  function inorder(callback, currentRoot = this.root) {
+  function preorder(callback, currentRoot = this.root) {
     if (!callback) {
       if (!currentRoot.left && !currentRoot.right) return currentRoot.data;
-      if (!currentRoot.left) return [currentRoot.data].concat(inorder(callback, currentRoot.right));
+      if (!currentRoot.left) {
+        return [currentRoot.data].concat(preorder(callback, currentRoot.right));
+      }
     }
 
     // edge case
@@ -119,18 +121,18 @@ const Tree = (arr) => {
 
     if (callback) {
       console.log(callback(currentRoot.data));
-      inorder(callback, currentRoot.left);
-      inorder(callback, currentRoot.right);
+      preorder(callback, currentRoot.left);
+      preorder(callback, currentRoot.right);
       return true;
     }
     return [currentRoot.data].concat(
-      inorder(callback, currentRoot.left),
-      inorder(callback, currentRoot.right),
+      preorder(callback, currentRoot.left),
+      preorder(callback, currentRoot.right),
     );
   }
 
   return {
-    root, insert, deleteNode, find, levelOrder, inorder,
+    root, insert, deleteNode, find, levelOrder, preorder,
   };
 };
 
@@ -153,4 +155,4 @@ const list = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const alterList = removeDuplicates(mergeSort(list));
 const treeNode = Tree(alterList);
 prettyPrint(treeNode.root);
-treeNode.inorder(multiplyBy2);
+treeNode.preorder(multiplyBy2);
