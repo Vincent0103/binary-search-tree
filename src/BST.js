@@ -157,16 +157,36 @@ const Tree = (arr) => {
     return true;
   }
 
-  // function postorder(callback, currentRoot = this.root) {
-  //   if (!currentRoot.left) return
+  function postorder(callback, currentRoot = this.root) {
+    if (!currentRoot.left && !currentRoot.right) {
+      if (!callback) return currentRoot.data;
+      console.log(callback(currentRoot.data));
+      return true;
+    }
+    if (!currentRoot.left) {
+      if (!callback) {
+        return [].concat(postorder(callback, currentRoot.right), currentRoot.data);
+      }
+      postorder(callback, currentRoot.right);
+      console.log(callback(currentRoot.data));
+      return true;
+    }
 
-  //   postorder(callback, currentRoot.left);
-  //   postorder(callback, currentRoot.right);
-  //   console.log(currentRoot);
-  // }
+    if (!callback) {
+      return [].concat(
+        postorder(callback, currentRoot.left),
+        postorder(callback, currentRoot.right),
+        currentRoot.data,
+      );
+    }
+    postorder(callback, currentRoot.left);
+    postorder(callback, currentRoot.right);
+    console.log(callback(currentRoot.data));
+    return true;
+  }
 
   return {
-    root, insert, deleteNode, find, levelOrder, preorder, inorder,
+    root, insert, deleteNode, find, levelOrder, preorder, inorder, postorder,
   };
 };
 
@@ -189,4 +209,4 @@ const list = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const alterList = removeDuplicates(mergeSort(list));
 const treeNode = Tree(alterList);
 prettyPrint(treeNode.root);
-treeNode.inorder(multiplyBy2);
+treeNode.postorder(multiplyBy2);
