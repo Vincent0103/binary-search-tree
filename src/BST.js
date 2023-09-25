@@ -185,8 +185,21 @@ const Tree = (arr) => {
     return true;
   }
 
+  function height(currentRoot = this.root) {
+    if (!currentRoot.left && !currentRoot.right) return 1;
+    if (!currentRoot.left || !currentRoot.right) {
+      return (height(currentRoot.right) || height(currentRoot.left)) + 1;
+    }
+    if (currentRoot.left && currentRoot.right) {
+      const leftValue = height(currentRoot.left);
+      const rightValue = height(currentRoot.right);
+      return (leftValue > rightValue) ? leftValue + 1 : rightValue + 1;
+    }
+    return null;
+  }
+
   return {
-    root, insert, deleteNode, find, levelOrder, preorder, inorder, postorder,
+    root, insert, deleteNode, find, levelOrder, preorder, inorder, postorder, height,
   };
 };
 
@@ -206,7 +219,9 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 const multiplyBy2 = (x) => x * 2;
 
 const list = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+// const list = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 248,
+//   237, 1239, 2847, 430, 237, 23974, 2139, 32];
 const alterList = removeDuplicates(mergeSort(list));
 const treeNode = Tree(alterList);
 prettyPrint(treeNode.root);
-treeNode.postorder(multiplyBy2);
+console.log(treeNode.height());
