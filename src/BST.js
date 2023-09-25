@@ -99,90 +99,61 @@ const Tree = (arr) => {
     if (currentRoot.left) queue.push(currentRoot.left);
     if (currentRoot.right) queue.push(currentRoot.right);
     if (queue.length > 0) {
-      if (!callback) return [currentRoot.data].concat(levelOrder(callback, queue, queue.shift()));
-      callback(currentRoot.data);
-      return levelOrder(callback, queue, queue.shift());
+      return [(callback) ? callback(currentRoot.data) : currentRoot.data]
+        .concat(levelOrder(callback, queue, queue.shift()));
     }
-    if (!callback) return currentRoot.data;
-    callback(currentRoot.data);
-    return true;
+    if (!callback) return (callback) ? callback(currentRoot.data) : currentRoot.data;
+    return null;
   }
 
   function preorder(callback, currentRoot = this.root) {
-    if (!callback) {
-      if (!currentRoot.left && !currentRoot.right) return currentRoot.data;
-      if (!currentRoot.left) {
-        return [currentRoot.data].concat(preorder(callback, currentRoot.right));
-      }
+    if (!currentRoot.left && !currentRoot.right) {
+      return (callback) ? callback(currentRoot.data) : currentRoot.data;
+    }
+    if (!currentRoot.left) {
+      return [(callback) ? callback(currentRoot.data) : currentRoot.data]
+        .concat(preorder(callback, currentRoot.right));
     }
 
     // edge case
     if (!currentRoot) return null;
 
-    if (callback) {
-      callback(currentRoot.data);
-      preorder(callback, currentRoot.left);
-      preorder(callback, currentRoot.right);
-      return true;
-    }
-    return [currentRoot.data].concat(
-      preorder(callback, currentRoot.left),
-      preorder(callback, currentRoot.right),
-    );
+    return [(callback) ? callback(currentRoot.data) : currentRoot.data]
+      .concat(preorder(callback, currentRoot.left), preorder(callback, currentRoot.right));
   }
 
   function inorder(callback, currentRoot = this.root) {
     if (!currentRoot.left && !currentRoot.right) {
-      if (!callback) return currentRoot.data;
-      callback(currentRoot.data);
-      return true;
+      return (callback) ? callback(currentRoot.data) : currentRoot.data;
     }
     if (!currentRoot.left) {
-      if (!callback) return [currentRoot.data].concat(inorder(callback, currentRoot.right));
-      callback(currentRoot.data);
-      inorder(callback, currentRoot.right);
-      return true;
+      return [(callback) ? callback(currentRoot.data) : currentRoot.data]
+        .concat(inorder(callback, currentRoot.right));
     }
 
-    if (!callback) {
-      return [].concat(
-        inorder(callback, currentRoot.left),
-        currentRoot.data,
-        inorder(callback, currentRoot.right),
-      );
-    }
-    inorder(callback, currentRoot.left);
-    callback(currentRoot.data);
-    inorder(callback, currentRoot.right);
-    return true;
+    return [].concat(
+      inorder(callback, currentRoot.left),
+      (callback) ? callback(currentRoot.data) : currentRoot.data,
+      inorder(callback, currentRoot.right),
+    );
   }
 
   function postorder(callback, currentRoot = this.root) {
     if (!currentRoot.left && !currentRoot.right) {
-      if (!callback) return currentRoot.data;
-      console.log(callback(currentRoot.data));
-      return true;
+      return (callback) ? callback(currentRoot.data) : currentRoot.data;
     }
     if (!currentRoot.left) {
-      if (!callback) {
-        return [].concat(postorder(callback, currentRoot.right), currentRoot.data);
-      }
-      postorder(callback, currentRoot.right);
-      console.log(callback(currentRoot.data));
-      return true;
-    }
-
-    if (!callback) {
       return [].concat(
-        postorder(callback, currentRoot.left),
         postorder(callback, currentRoot.right),
-        currentRoot.data,
+        (callback) ? callback(currentRoot.data) : currentRoot.data,
       );
     }
-    postorder(callback, currentRoot.left);
-    postorder(callback, currentRoot.right);
-    console.log(callback(currentRoot.data));
-    return true;
+
+    return [].concat(
+      postorder(callback, currentRoot.left),
+      postorder(callback, currentRoot.right),
+      (callback) ? callback(currentRoot.data) : currentRoot.data,
+    );
   }
 
   function height(currentRoot = this.root) {
@@ -224,4 +195,4 @@ const list = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const alterList = removeDuplicates(mergeSort(list));
 const treeNode = Tree(alterList);
 prettyPrint(treeNode.root);
-console.log(treeNode.height());
+console.log(treeNode.postorder(multiplyBy2));
