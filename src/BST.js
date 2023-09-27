@@ -16,9 +16,10 @@ const Tree = (arr) => {
   const root = buildTree(arr);
 
   function insert(val, currentRoot = this.root) {
+    if (typeof val !== 'number') return null;
     if (val > currentRoot.data) {
       if (!currentRoot.right) {
-        const rightRoot = currentRoot.right;
+        const rightRoot = currentRoot;
         rightRoot.right = Node(val);
         return root;
       }
@@ -114,6 +115,10 @@ const Tree = (arr) => {
       return [(callback) ? callback(currentRoot.data) : currentRoot.data]
         .concat(preorder(callback, currentRoot.right));
     }
+    if (!currentRoot.right) {
+      return [(callback) ? callback(currentRoot.data) : currentRoot.data]
+        .concat(preorder(callback, currentRoot.left));
+    }
 
     // edge case
     if (!currentRoot) return null;
@@ -158,9 +163,8 @@ const Tree = (arr) => {
 
   function height(currentRoot = this.root) {
     if (!currentRoot.left && !currentRoot.right) return 1;
-    if (!currentRoot.left || !currentRoot.right) {
-      return (height(currentRoot.right) || height(currentRoot.left)) + 1;
-    }
+    if (!currentRoot.left) return height(currentRoot.right) + 1;
+    if (!currentRoot.right) return height(currentRoot.left) + 1;
     if (currentRoot.left && currentRoot.right) {
       const leftValue = height(currentRoot.left);
       const rightValue = height(currentRoot.right);
@@ -194,5 +198,10 @@ const list = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 //   237, 1239, 2847, 430, 237, 23974, 2139, 32];
 const alterList = removeDuplicates(mergeSort(list));
 const treeNode = Tree(alterList);
+treeNode.insert(18);
+treeNode.insert(54);
+treeNode.insert(182);
+treeNode.insert(47);
+treeNode.insert(33);
 prettyPrint(treeNode.root);
-console.log(treeNode.postorder(multiplyBy2));
+console.log(treeNode.preorder(multiplyBy2));
