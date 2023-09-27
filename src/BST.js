@@ -135,6 +135,10 @@ const Tree = (arr) => {
       return [(callback) ? callback(currentRoot.data) : currentRoot.data]
         .concat(inorder(callback, currentRoot.right));
     }
+    if (!currentRoot.right) {
+      return [(callback) ? callback(currentRoot.data) : currentRoot.data]
+        .concat(inorder(callback, currentRoot.left));
+    }
 
     return [].concat(
       inorder(callback, currentRoot.left),
@@ -150,6 +154,12 @@ const Tree = (arr) => {
     if (!currentRoot.left) {
       return [].concat(
         postorder(callback, currentRoot.right),
+        (callback) ? callback(currentRoot.data) : currentRoot.data,
+      );
+    }
+    if (!currentRoot.right) {
+      return [].concat(
+        postorder(callback, currentRoot.left),
         (callback) ? callback(currentRoot.data) : currentRoot.data,
       );
     }
@@ -204,4 +214,5 @@ treeNode.insert(182);
 treeNode.insert(47);
 treeNode.insert(33);
 prettyPrint(treeNode.root);
-console.log(treeNode.preorder(multiplyBy2));
+console.log(treeNode.inorder());
+console.log(treeNode.postorder());
