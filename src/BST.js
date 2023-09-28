@@ -183,8 +183,19 @@ const Tree = (arr) => {
     return null;
   }
 
+  function depth(node, currentRoot = this.root) {
+    if (!currentRoot || !node) return null;
+    if (node.data === currentRoot.data) return 0;
+    if (node.data > currentRoot.data) {
+      const rightNodeDepth = depth(node, currentRoot.right);
+      return (rightNodeDepth !== null) ? rightNodeDepth + 1 : rightNodeDepth;
+    }
+    const leftNodeDepth = depth(node, currentRoot.left);
+    return (leftNodeDepth !== null) ? leftNodeDepth + 1 : leftNodeDepth;
+  }
+
   return {
-    root, insert, deleteNode, find, levelOrder, preorder, inorder, postorder, height,
+    root, insert, deleteNode, find, levelOrder, preorder, inorder, postorder, height, depth,
   };
 };
 
@@ -203,16 +214,16 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 
 const multiplyBy2 = (x) => x * 2;
 
-const list = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-// const list = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 248,
-//   237, 1239, 2847, 430, 237, 23974, 2139, 32];
+// const list = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+const list = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 248,
+  237, 1239, 2847, 430, 237, 23974, 2139, 32];
 const alterList = removeDuplicates(mergeSort(list));
 const treeNode = Tree(alterList);
-treeNode.insert(18);
-treeNode.insert(54);
-treeNode.insert(182);
-treeNode.insert(47);
-treeNode.insert(33);
+// treeNode.insert(18);
+// treeNode.insert(54);
+// treeNode.insert(182);
+// treeNode.insert(47);
+// treeNode.insert(33);
 prettyPrint(treeNode.root);
-console.log(treeNode.inorder());
-console.log(treeNode.postorder());
+const node = treeNode.find(430);
+console.log(treeNode.depth(node));
