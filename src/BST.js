@@ -194,8 +194,37 @@ const Tree = (arr) => {
     return (leftNodeDepth !== null) ? leftNodeDepth + 1 : leftNodeDepth;
   }
 
+  function isBalanced(currentRoot = this.root) {
+    if (currentRoot.left && currentRoot.right) {
+      if (Math.abs(height(currentRoot.left) - height(currentRoot.right)) > 1) {
+        return false;
+      }
+      return !(!isBalanced(currentRoot.left) || !isBalanced(currentRoot.right));
+    }
+    return true;
+  }
+
+  function rebalance(currentRoot = this.root) {
+    if (this.isBalanced()) return currentRoot;
+    const nodeArr = this.levelOrder();
+    const alterNodeArr = removeDuplicates(mergeSort(nodeArr));
+    this.root = buildTree(alterNodeArr);
+    return this.root;
+  }
+
   return {
-    root, insert, deleteNode, find, levelOrder, preorder, inorder, postorder, height, depth,
+    root,
+    insert,
+    deleteNode,
+    find,
+    levelOrder,
+    preorder,
+    inorder,
+    postorder,
+    height,
+    depth,
+    isBalanced,
+    rebalance,
   };
 };
 
@@ -214,16 +243,13 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 
 const multiplyBy2 = (x) => x * 2;
 
-// const list = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+// const list = [1, 7, 4, 23, 8, 9, 4, 3, 5];
 const list = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 248,
   237, 1239, 2847, 430, 237, 23974, 2139, 32];
 const alterList = removeDuplicates(mergeSort(list));
 const treeNode = Tree(alterList);
-// treeNode.insert(18);
-// treeNode.insert(54);
-// treeNode.insert(182);
-// treeNode.insert(47);
-// treeNode.insert(33);
+treeNode.insert(18);
+treeNode.insert(54);
+treeNode.insert(182);
 prettyPrint(treeNode.root);
-const node = treeNode.find(430);
-console.log(treeNode.depth(node));
+console.log(treeNode.isBalanced());
