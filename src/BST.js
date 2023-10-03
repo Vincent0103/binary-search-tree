@@ -256,3 +256,4 @@ const alterList = removeDuplicates(mergeSort(list));
 // prettyPrint(treeNode.rebalance());
 
 export default Tree;
+export { prettyPrint };

@@ -1,4 +1,4 @@
-import Tree from './bst.js';
+import Tree, { prettyPrint } from './bst.js';
 import mergeSort from './mergeSort.js';
 import removeDuplicates from './removeDuplicates.js';
 
@@ -10,7 +10,9 @@ function createRandomArray(length) {
 
 function createRandomBST(length = 100) {
   const newArray = removeDuplicates(mergeSort(createRandomArray(length)));
-  return newArray;
+  const treeNode = Tree(newArray);
+  return treeNode;
 }
 
-console.log(createRandomBST(28));
+const treeNode = createRandomBST(28);
+prettyPrint(treeNode.root);
