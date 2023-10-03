@@ -243,14 +243,16 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 
 const multiplyBy2 = (x) => x * 2;
 
-// const list = [1, 7, 4, 23, 8, 9, 4, 3, 5];
-const list = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 248,
-  237, 1239, 2847, 430, 237, 23974, 2139, 32];
+const list = [1, 7, 4, 23, 8, 9, 4, 3, 5];
+// const list = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 248,
+//   237, 1239, 2847, 430, 237, 23974, 2139, 32];
 const alterList = removeDuplicates(mergeSort(list));
-const treeNode = Tree(alterList);
-treeNode.insert(18);
-treeNode.insert(54);
-treeNode.insert(182);
-prettyPrint(treeNode.root);
-console.log('\n\n-------------------------------------------------------------------\n\n');
-prettyPrint(treeNode.rebalance());
+// const treeNode = Tree(alterList);
+// treeNode.insert(18);
+// treeNode.insert(54);
+// treeNode.insert(182);
+// prettyPrint(treeNode.root);
+// console.log('\n\n-------------------------------------------------------------------\n\n');
+// prettyPrint(treeNode.rebalance());
+
+export default Tree;
