@@ -252,4 +252,5 @@ treeNode.insert(18);
 treeNode.insert(54);
 treeNode.insert(182);
 prettyPrint(treeNode.root);
-console.log(treeNode.isBalanced());
+console.log('\n\n-------------------------------------------------------------------\n\n');
+prettyPrint(treeNode.rebalance());
